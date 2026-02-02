@@ -19,12 +19,19 @@ TKDapp is a mobile catalog of Taekwondo movements designed to help practitioners
 - **Belt System**: Movements organized by belt requirements
 - **Offline-Ready**: Core functionality works without internet (videos require connection)
 
-<img width="718" height="1599" alt="image" src="https://github.com/user-attachments/assets/4eec7a9e-0735-4010-b501-d6492bc834cd" />
+...
 
-<img width="718" height="1599" alt="image" src="https://github.com/user-attachments/assets/42a88e16-2373-42d8-af16-be5e62de9586" />
+<img width="318" height="799" alt="image" src="https://github.com/user-attachments/assets/4eec7a9e-0735-4010-b501-d6492bc834cd" />
 
-<img width="718" height="1599" alt="image" src="https://github.com/user-attachments/assets/df8a79a0-963c-4f24-82c1-920e7c215e32" />
+...
 
+<img width="318" height="799" alt="image" src="https://github.com/user-attachments/assets/42a88e16-2373-42d8-af16-be5e62de9586" />
+
+...
+
+<img width="318" height="799" alt="image" src="https://github.com/user-attachments/assets/df8a79a0-963c-4f24-82c1-920e7c215e32" />
+
+...
 
 ## 🏗️ Project Structure
 
