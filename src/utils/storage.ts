@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const FAVORITES_KEY = '@tkdapp:favorites';
 
@@ -8,6 +9,11 @@ export const getFavorites = async (): Promise<string[]> => {
     return favorites ? JSON.parse(favorites) : [];
   } catch (error) {
     console.error('Error loading favorites:', error);
+    Alert.alert(
+      'Erro ao Carregar Favoritos',
+      'Não foi possível carregar seus favoritos. Tente novamente.',
+      [{ text: 'OK' }]
+    );
     return [];
   }
 };

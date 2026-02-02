@@ -63,7 +63,7 @@ export const movements: Movement[] = [
       'Mantenha as mãos em guarda',
       'Pivote na perna de apoio',
     ],
-    videos: ['PkQTB7oHITY', 'ExNAWDn6Ulk'],
+    videos: ['PkQTB7oHITY'],
   },
   {
     id: '3',

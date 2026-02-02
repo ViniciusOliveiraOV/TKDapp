@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
+import { useTheme } from '../contexts/ThemeContext';
+import { SPACING, BORDER_RADIUS } from '../constants/theme';
 
 interface CardProps {
   children: ReactNode;
@@ -9,22 +10,34 @@ interface CardProps {
 }
 
 export default function Card({ children, onPress, style }: CardProps) {
-  const Container = onPress ? TouchableOpacity : View;
+  const { colors } = useTheme();
+  
+  const cardStyle = [
+    styles.card, 
+    { backgroundColor: colors.white, shadowColor: colors.shadow },
+    style
+  ];
+  
+  if (onPress) {
+    return (
+      <TouchableOpacity style={cardStyle} onPress={onPress}>
+        {children}
+      </TouchableOpacity>
+    );
+  }
   
   return (
-    <Container style={[styles.card, style]} onPress={onPress}>
+    <View style={cardStyle}>
       {children}
-    </Container>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.white,
     borderRadius: BORDER_RADIUS.md,
     padding: SPACING.lg,
     marginBottom: SPACING.md,
-    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Linking, ActivityIndicator } from 'react-native';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants/theme';
 
@@ -11,6 +11,7 @@ export default function VideoPlayer({ videos }: VideoPlayerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const screenWidth = Dimensions.get('window').width;
   const videoHeight = (screenWidth * 9) / 16; // Aspect ratio 16:9
@@ -45,6 +46,12 @@ export default function VideoPlayer({ videos }: VideoPlayerProps) {
         )}
 
         <View style={styles.videoContainer}>
+          {loading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color={COLORS.primary} />
+              <Text style={styles.loadingText}>Carregando vídeo...</Text>
+            </View>
+          )}
           <YoutubeIframe
             height={videoHeight}
             videoId={currentVideoId}
@@ -55,6 +62,7 @@ export default function VideoPlayer({ videos }: VideoPlayerProps) {
               }
             }}
             onError={() => setError(true)}
+            onReady={() => setLoading(false)}
             webViewProps={{
               androidLayerType: 'hardware',
               nestedScrollEnabled: true,
@@ -120,6 +128,20 @@ const styles = StyleSheet.create({
   videoContainer: {
     flex: 1,
     backgroundColor: COLORS.black,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  loadingText: {
+    color: COLORS.white,
+    marginTop: SPACING.sm,
   },
   arrowLeft: {
     padding: SPACING.sm,

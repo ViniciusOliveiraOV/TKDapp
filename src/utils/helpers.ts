@@ -1,5 +1,40 @@
 import { COLORS } from '../constants/theme';
 
+export const translateCategoryName = (categoryName: string): string => {
+  const mapping: Record<string, string> = {
+    'Chutes': 'kicks',
+    'Bloqueios': 'blocks',
+    'Posturas': 'stances',
+    'Socos': 'punches',
+    'Defesas': 'defenses',
+  };
+  return mapping[categoryName] || categoryName.toLowerCase();
+};
+
+export const translateCategoryDescription = (categoryName: string): string => {
+  const mapping: Record<string, string> = {
+    'Chutes': 'kicksDesc',
+    'Bloqueios': 'blocksDesc',
+    'Posturas': 'stancesDesc',
+    'Socos': 'punchesDesc',
+    'Defesas': 'defensesDesc',
+  };
+  return mapping[categoryName] || categoryName;
+};
+
+export const translateDifficulty = (difficulty: string): string => {
+  switch (difficulty) {
+    case 'Iniciante':
+      return 'beginner';
+    case 'Intermediário':
+      return 'intermediate';
+    case 'Avançado':
+      return 'advanced';
+    default:
+      return difficulty.toLowerCase();
+  }
+};
+
 export const getDifficultyColor = (difficulty: string): string => {
   switch (difficulty) {
     case 'Iniciante':

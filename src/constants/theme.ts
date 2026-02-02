@@ -1,4 +1,6 @@
-export const COLORS = {
+import { useColorScheme } from 'react-native';
+
+export const COLORS_LIGHT = {
   primary: '#2196F3',
   primaryDark: '#1976D2',
   secondary: '#FF9800',
@@ -19,6 +21,31 @@ export const COLORS = {
   shadow: '#000',
   favorite: '#FFD700',
 };
+
+export const COLORS_DARK = {
+  primary: '#64B5F6',
+  primaryDark: '#1565C0',
+  secondary: '#FFB74D',
+  background: '#121212',
+  white: '#1E1E1E',
+  black: '#FFFFFF',
+  text: {
+    primary: '#FFFFFF',
+    secondary: '#B0B0B0',
+    light: '#666',
+  },
+  difficulty: {
+    beginner: '#66BB6A',
+    intermediate: '#FFB74D',
+    advanced: '#EF5350',
+  },
+  border: '#333',
+  shadow: '#000',
+  favorite: '#FFD700',
+};
+
+// Export default COLORS (light mode) for backwards compatibility
+export const COLORS = COLORS_LIGHT;
 
 export const SPACING = {
   xs: 4,
@@ -43,4 +70,9 @@ export const BORDER_RADIUS = {
   sm: 8,
   md: 12,
   lg: 16,
+};
+
+export const useThemeColors = () => {
+  const scheme = useColorScheme();
+  return scheme === 'dark' ? COLORS_DARK : COLORS_LIGHT;
 };
