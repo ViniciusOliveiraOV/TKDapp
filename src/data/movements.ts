@@ -1,4 +1,4 @@
-import { Movement, Category } from '../types';
+import type { Movement, Category } from '../types';
 
 export const categories: Category[] = [
   {
@@ -42,7 +42,6 @@ export const movements: Movement[] = [
     category: 'Chutes',
     description: 'Chute básico executado com a parte frontal do pé, empurrando o alvo para frente.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Mantenha o equilíbrio na perna de apoio',
       'Eleve o joelho antes de estender a perna',
@@ -57,7 +56,6 @@ export const movements: Movement[] = [
     category: 'Chutes',
     description: 'Chute circular executado girando o quadril, atingindo o alvo com o peito do pé.',
     difficulty: 'Intermediário',
-    belt: 'Faixa Amarela',
     tips: [
       'Gire o quadril completamente',
       'Mantenha as mãos em guarda',
@@ -72,13 +70,12 @@ export const movements: Movement[] = [
     category: 'Chutes',
     description: 'Chute executado lateralmente, atingindo o alvo com a borda externa do pé.',
     difficulty: 'Intermediário',
-    belt: 'Faixa Amarela',
     tips: [
       'Corpo perpendicular ao alvo',
       'Joelho levantado antes da extensão',
       'Use o calcanhar ou a borda do pé',
     ],
-    videos: ['M825zz7gxN0', 'qE76uY7HsAA', 'DHY9duqIZZ8'],
+    videos: ['M825zz7gxN0'],
   },
   {
     id: '4',
@@ -87,7 +84,6 @@ export const movements: Movement[] = [
     category: 'Chutes',
     description: 'Chute executado de cima para baixo, golpeando o alvo com o calcanhar.',
     difficulty: 'Avançado',
-    belt: 'Faixa Verde',
     tips: [
       'Levante a perna o mais alto possível',
       'Mantenha a perna estendida',
@@ -102,7 +98,6 @@ export const movements: Movement[] = [
     category: 'Chutes',
     description: 'Chute giratório que atinge o alvo em um movimento circular amplo.',
     difficulty: 'Avançado',
-    belt: 'Faixa Azul',
     tips: [
       'Movimento fluido e contínuo',
       'Gire 360 graus',
@@ -119,7 +114,6 @@ export const movements: Movement[] = [
     category: 'Bloqueios',
     description: 'Bloqueio executado acima da cabeça para defender ataques superiores.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Antebraço paralelo à testa',
       'Movimento ascendente forte',
@@ -134,7 +128,6 @@ export const movements: Movement[] = [
     category: 'Bloqueios',
     description: 'Bloqueio na altura do tronco, movendo o braço de dentro para fora.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Braço na altura do ombro',
       'Movimento lateral forte',
@@ -149,7 +142,6 @@ export const movements: Movement[] = [
     category: 'Bloqueios',
     description: 'Bloqueio executado na direção descendente para defender ataques baixos.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Antebraço horizontal na altura do abdômen',
       'Movimento descendente forte',
@@ -166,7 +158,6 @@ export const movements: Movement[] = [
     category: 'Posturas',
     description: 'Postura básica com pés na largura dos ombros, um pé à frente.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Pés paralelos',
       'Peso distribuído igualmente',
@@ -181,7 +172,6 @@ export const movements: Movement[] = [
     category: 'Posturas',
     description: 'Postura larga e baixa com pés afastados e joelhos flexionados.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Pés duas vezes a largura dos ombros',
       'Joelhos flexionados a 90 graus',
@@ -191,12 +181,11 @@ export const movements: Movement[] = [
   },
   {
     id: '11',
-    name: 'Postura em L',
+    name: 'Postura Frontal Longa',
     koreanName: 'Ap Kubi',
     category: 'Posturas',
     description: 'Postura com perna dianteira flexionada e traseira estendida.',
     difficulty: 'Intermediário',
-    belt: 'Faixa Amarela',
     tips: [
       '70% do peso na perna dianteira',
       'Joelho dianteiro sobre o tornozelo',
@@ -213,7 +202,6 @@ export const movements: Movement[] = [
     category: 'Socos',
     description: 'Soco básico executado em linha reta com rotação do punho.',
     difficulty: 'Iniciante',
-    belt: 'Faixa Branca',
     tips: [
       'Rotação do quadril',
       'Punho fechado firmemente',
@@ -228,7 +216,6 @@ export const movements: Movement[] = [
     category: 'Socos',
     description: 'Soco executado lateralmente com rotação do tronco.',
     difficulty: 'Intermediário',
-    belt: 'Faixa Amarela',
     tips: [
       'Gire o tronco completamente',
       'Punho na altura do peitoral',
@@ -245,7 +232,6 @@ export const movements: Movement[] = [
     category: 'Defesas',
     description: 'Defesa executada com a lateral da mão aberta.',
     difficulty: 'Intermediário',
-    belt: 'Faixa Verde',
     tips: [
       'Mão aberta e tensa',
       'Movimento circular',
@@ -260,7 +246,6 @@ export const movements: Movement[] = [
     category: 'Defesas',
     description: 'Defesa com os braços cruzados formando um X.',
     difficulty: 'Avançado',
-    belt: 'Faixa Azul',
     tips: [
       'Braços cruzados firmemente',
       'Boa amplitude de cobertura',

@@ -63,9 +63,6 @@ export default function MovementsScreen({ route, navigation }: Props) {
               <Text style={[styles.koreanName, { color: colors.text.secondary }]}>
                 {item.koreanName}
               </Text>
-              <Text style={[styles.belt, { color: colors.text.light }]}>
-                {item.belt}
-              </Text>
             </Card>
           )}
           contentContainerStyle={styles.list}

@@ -1,37 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { MainTabParamList, RootStackParamList } from '../navigation/AppNavigator';
 import { movements } from '../data/movements';
-import { getFavorites } from '../utils/storage';
+import { useAccount } from '../contexts/AccountContext';
 import Card from '../components/Card';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SPACING, FONT_SIZES } from '../constants/theme';
 
-export default function FavoritesScreen() {
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function FavoritesScreen({ navigation }: BottomTabScreenProps<MainTabParamList, 'Favoritos'>) {
+  const { favorites, configured } = useAccount();
   const { colors } = useTheme();
   const { t } = useLanguage();
   
-  useEffect(() => {
-    loadFavorites();
-  }, []);
-  
-  const loadFavorites = async () => {
-    const favIds = await getFavorites();
-    setFavorites(favIds);
-    setLoading(false);
-  };
-  
   const favoriteMovements = movements.filter(m => favorites.includes(m.id));
-  
-  if (loading) {
-    return (
-      <View style={[styles.centered, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+
+  if (!configured) return <View style={[styles.empty, { backgroundColor: colors.background }]}><Text>Entre na escola para salvar favoritos no seu perfil.</Text></View>;
   
   if (favoriteMovements.length === 0) {
     return (
@@ -52,7 +38,7 @@ export default function FavoritesScreen() {
       data={favoriteMovements}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Card onPress={() => {}}>
+        <Card onPress={() => navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()?.navigate('Detalhes', { movementId: item.id })}>
           <Text style={[styles.name, { color: colors.text.primary }]}>
             {item.name}
           </Text>

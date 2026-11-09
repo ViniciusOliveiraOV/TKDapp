@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -6,7 +6,7 @@ import { movements } from '../data/movements';
 import Badge from '../components/Badge';
 import VideoPlayer from '../components/VideoPlayer';
 import { getDifficultyColor, translateDifficulty } from '../utils/helpers';
-import { getFavorites, toggleFavorite } from '../utils/storage';
+import { useAccount } from '../contexts/AccountContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants/theme';
@@ -16,22 +16,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Detalhes'>;
 export default function DetailScreen({ route }: Props) {
   const { movementId } = route.params;
   const movement = movements.find((m) => m.id === movementId);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { configured, favorites, toggleFavorite } = useAccount();
+  const [favoriteError, setFavoriteError] = useState<string | null>(null);
+  const isFavorite = favorites.includes(movementId);
   const { colors } = useTheme();
   const { t } = useLanguage();
 
-  useEffect(() => {
-    loadFavoriteStatus();
-  }, []);
-
-  const loadFavoriteStatus = async () => {
-    const favorites = await getFavorites();
-    setIsFavorite(favorites.includes(movementId));
-  };
-
   const handleToggleFavorite = async () => {
-    const updatedFavorites = await toggleFavorite(movementId);
-    setIsFavorite(updatedFavorites.includes(movementId));
+    try { await toggleFavorite(movementId); setFavoriteError(null); }
+    catch (caught) { setFavoriteError(caught instanceof Error ? caught.message : 'Falha ao salvar favorito'); }
   };
 
   if (!movement) {
@@ -56,10 +49,11 @@ export default function DetailScreen({ route }: Props) {
               {movement.koreanName}
             </Text>
           </View>
-          <TouchableOpacity onPress={handleToggleFavorite} style={styles.favoriteButton}>
+          {configured && <TouchableOpacity accessibilityRole="button" onPress={handleToggleFavorite} style={styles.favoriteButton}>
             <Text style={styles.favoriteIcon}>{isFavorite ? '⭐' : '☆'}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
+        {favoriteError && <Text accessibilityRole="alert" style={{ color: '#a00' }}>{favoriteError}</Text>}
       </View>
 
       <VideoPlayer videos={movement.videos} />
@@ -76,10 +70,10 @@ export default function DetailScreen({ route }: Props) {
           </View>
           <View style={styles.infoItem}>
             <Text style={[styles.infoLabel, { color: colors.text.secondary }]}>
-              Faixa
+              Currículo por faixa
             </Text>
             <Text style={[styles.infoValue, { color: colors.text.primary }]}>
-              {movement.belt}
+              Aguardando validação do mestre
             </Text>
           </View>
         </View>

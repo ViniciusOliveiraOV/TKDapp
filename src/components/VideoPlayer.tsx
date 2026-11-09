@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Linking, ActivityIndicator } from 'react-native';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants/theme';
+import { getVideoSource } from '../data/videoSources';
 
 interface VideoPlayerProps {
   videos: string[];
@@ -18,6 +19,7 @@ export default function VideoPlayer({ videos }: VideoPlayerProps) {
 
   const currentVideoId = videos[currentIndex];
   const hasMultipleVideos = videos.length > 1;
+  const source = getVideoSource(currentVideoId);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : videos.length - 1));
@@ -109,6 +111,11 @@ export default function VideoPlayer({ videos }: VideoPlayerProps) {
           ? `🎥 Vídeo ${currentIndex + 1} de ${videos.length}`
           : '🎥 Vídeo demonstrativo da técnica'}
       </Text>
+      {source && (
+        <Text style={styles.source}>
+          Demonstração pública · {source.title} · {source.publisher}
+        </Text>
+      )}
     </View>
   );
 }
@@ -182,6 +189,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     paddingBottom: SPACING.lg,
     marginTop: SPACING.sm,
+  },
+  source: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.text.secondary,
+    textAlign: 'center',
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.lg,
   },
   errorButton: {
     backgroundColor: COLORS.secondary,

@@ -1,217 +1,62 @@
-# TKDapp - Taekwondo Movements Catalog 🥋
+# TKDapp: demo de uma escola de Taekwondo
 
-A comprehensive mobile application for learning and practicing Taekwondo techniques. Built with React Native and Expo.
+App Expo/React Native em português para apresentar técnicas e poomsae ao mestre e validar um serviço mensal de cerca de R$200. O preço é uma proposta comercial; não há cobrança dentro do app.
 
-> ⚠️ **Development Status**: This app is currently under active development and has not been released yet.
+## Estado atual
 
-## 📱 About
+- 15 técnicas em cinco categorias, cada uma com vídeo demonstrativo público identificado por título e canal. Há busca, detalhes e abertura no YouTube quando o vídeo incorporado falha.
+- Oito Taegeuk e nove poomsae Dan com demonstrações públicas do Kukkiwon.
+- Tabela de faixas e zonas etárias de **competição Kyorugui CBTKD 2026**. A idade considera 2026 menos o ano de nascimento; algumas zonas se sobrepõem. A tabela oficial não define o currículo de aulas do mestre.
+- Com Supabase configurado: cadastro e login por e-mail, convite para uma escola, perfil privado do praticante e favoritos por conta. Para menores, o adulto responsável usa a própria conta e confirma essa condição no perfil.
+- Sem Supabase configurado: catálogo de prévia rotulado; login, perfil e favoritos privados ficam indisponíveis.
 
-TKDapp is a mobile catalog of Taekwondo movements designed to help practitioners learn and perfect their techniques. Each movement includes detailed information, video demonstrations, and practical tips - all in Brazilian Portuguese (PT-BR).
+O mapeamento das técnicas e poomsae por idade e graduação aguarda o currículo do mestre. Os vídeos públicos são provisórios e precisam da revisão dele. Não use dados reais de menores antes de revisar o aviso de privacidade e o fluxo do responsável.
 
-## ✨ Features
+## Rodar a prévia
 
-- **5 Movement Categories**: Kicks (Chutes), Blocks (Bloqueios), Stances (Posturas), Punches (Socos), and Defenses (Defesas)
-- **15 Techniques**: Carefully curated movements with Korean names and Portuguese descriptions
-- **Video Demonstrations**: YouTube videos embedded for each technique with carousel navigation
-- **Search Functionality**: Quick search across all movements with accent normalization
-- **Favorites System**: Save your favorite techniques for quick access (persisted with AsyncStorage)
-- **Difficulty Levels**: Beginner, Intermediate, and Advanced classifications
-- **Belt System**: Movements organized by belt requirements
-- **Offline-Ready**: Core functionality works without internet (videos require connection)
-
-## 🏗️ Project Structure
-
-```
-TKDapp/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── Badge.tsx       # Difficulty/belt badges
-│   │   ├── Card.tsx        # Movement cards
-│   │   ├── SearchBar.tsx   # Search input component
-│   │   └── VideoPlayer.tsx # YouTube video carousel
-│   ├── constants/
-│   │   └── theme.ts        # Centralized colors, spacing, fonts
-│   ├── data/
-│   │   └── movements.ts    # Movement data and categories
-│   ├── navigation/
-│   │   └── AppNavigator.tsx # Navigation configuration
-│   ├── screens/
-│   │   ├── CategoriesScreen.tsx # Category selection
-│   │   ├── MovementsScreen.tsx  # Movement list with search
-│   │   └── DetailScreen.tsx     # Movement details with videos
-│   ├── types/
-│   │   └── index.ts        # TypeScript interfaces
-│   └── utils/
-│       ├── helpers.ts      # Utility functions
-│       └── storage.ts      # AsyncStorage helpers
-├── App.tsx                 # Root component
-├── app.json               # Expo configuration
-└── package.json           # Dependencies
-
-```
-
-## 🛠️ Tech Stack
-
-- **React Native** (0.81.5) - Cross-platform mobile framework
-- **Expo** (~54.0.33) - Development platform and toolkit
-- **TypeScript** (~5.9.2) - Type safety and better DX
-- **React Navigation** - Navigation library (native-stack, bottom-tabs)
-- **AsyncStorage** (^2.2.0) - Local data persistence
-- **react-native-youtube-iframe** (^2.4.1) - Video playback
-- **react-native-webview** (13.15.0) - Required for YouTube player
-
-## 📋 Prerequisites
-
-- **Node.js** 16.x or higher
-- **npm** or **yarn**
-- **Expo Go** app (download from App Store or Google Play)
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
+Requer Node 20 ou mais e Expo Go ou um emulador Android/iOS.
 
 ```bash
-git clone https://github.com/ViniciusOliveiraOV/TKDapp.git
-cd TKDapp
-```
-
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-### 3. Start the development server
-
-```bash
+npm ci
 npm start
-# or
-npx expo start
 ```
 
-### 4. Run on your device
+## Ativar contas para o piloto
 
-- **Android/iOS**: Open the Expo Go app and scan the QR code
-- **Android Emulator**: Press `a` in the terminal
-- **iOS Simulator**: Press `i` in the terminal (macOS only)
+1. Crie um projeto Supabase, habilite autenticação por e-mail e configure confirmação de e-mail. Guarde a chave **publishable**; nunca coloque uma chave `service_role` no app.
+2. Aplique [a migração SQL](supabase/migrations/202611090001_pilot.sql) no projeto. Ela cria escolas, vínculos, perfis e favoritos, com políticas de acesso por usuário e uma função para validar convites.
+3. Gere um código de convite aleatório de pelo menos 24 bytes, por exemplo com `openssl rand -hex 24`. No SQL Editor do Supabase, crie a escola com o hash do código:
 
-## 🧹 Troubleshooting
+   ```sql
+   insert into public.schools (name, invite_hash)
+   values ('Nome da escola', encode(sha256(convert_to('COLE_O_CODIGO_AQUI', 'UTF8')), 'hex'));
+   ```
 
-If you encounter issues, try clearing the cache:
+   Entregue o código apenas ao mestre. O código em texto não fica no banco nem no app.
+4. Copie `.env.example` para `.env` e preencha `EXPO_PUBLIC_SUPABASE_URL` e `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Reinicie o Expo. Esses valores são públicos por definição; o convite e chaves administrativas continuam privados.
+5. Use contas fictícias no primeiro teste: crie uma conta, confirme o e-mail, entre, informe o convite, complete o perfil e salve um favorito. Teste uma segunda conta para conferir o isolamento de dados.
+
+Este repositório ainda não tem projeto Supabase conectado, pacote de loja assinado, plano de cobrança, política de privacidade aprovada ou teste em dispositivo físico. A migração foi exercitada em PostgreSQL local; a integração real com Supabase precisa ser validada quando houver credenciais.
+
+Uma auditoria de dependências de produção após atualizações compatíveis ainda apontou **2 avisos altos** em ferramentas transitivas (`image-size` e `postcss`); a correção automática restante pede atualização grande do Expo. Revisar isso antes de uma publicação ampla.
+
+## Verificação
 
 ```bash
-npx expo start --clear
+npm test
+npm run test:ui
+npx tsc --noEmit
+npx expo export --platform android
 ```
 
-Or do a clean reinstall:
+## Fontes de conteúdo
 
-```bash
-rm -rf node_modules .expo
-npm install
-npx expo start --clear
-```
+- [Regulamento Técnico Nacional de Kyorugui CBTKD 2026](https://firebasestorage.googleapis.com/v0/b/sg-cbtkd.appspot.com/o/anexos%2F7a10ead6-187d-09f8-0e47-d8249b1e1cf1.pdf?alt=media&token=6ea84381-d72d-4da4-aa2c-163bd353329b): idades e cores de faixa.
+- [Lista de demonstrações do Kukkiwon reunida pela British Taekwondo](https://www.britishtaekwondo.org.uk/taekwondo-poomsae-demonstration-videos-from-the-kukkiwon-world-taekwondo-headquarters/) e [lista complementar](https://jno-tkd.com/kukkiwon-poomsae): referências de poomsae. A primeira lista repete o link do 6º Taegeuk no 7º; o app usa um link separado, verificado no canal do Kukkiwon.
+- Os IDs, títulos e canais dos vídeos estão em [videoSources.ts](src/data/videoSources.ts); substitua cada vídeo quando o mestre enviar e aprovar sua gravação.
 
-## 🤝 Contributing
+## Próximas decisões com o mestre
 
-This project is in active development. If you'd like to contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 Development Roadmap
-
-- [ ] Add more movements (target: 50+ techniques)
-- [ ] Implement training routines
-- [ ] Add progress tracking
-- [ ] Include poomsae (forms) section
-- [ ] Multi-language support
-- [ ] Dark mode
-- [ ] Offline video caching
-- [ ] Build and publish to app stores
-
-## 👨‍💻 Author
-
-**Vinicius Oliveira**
-- GitHub: [@ViniciusOliveiraOV](https://github.com/ViniciusOliveiraOV)
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
----
-
-Made with ❤️ and 🥋 for the Taekwondo community
-
-Após iniciar o projeto, você pode:
-
-- **Android**: Pressione `a` no terminal ou escaneie o QR code com o app Expo Go
-- **iOS**: Pressione `i` no terminal (requer macOS) ou escaneie o QR code com a câmera
-- **Web**: Pressione `w` no terminal
-
-## 📂 Estrutura do Projeto
-
-```
-TKDapp/
-├── src/
-│   ├── data/
-│   │   └── movements.ts       # Dados dos movimentos
-│   ├── navigation/
-│   │   └── AppNavigator.tsx   # Configuração de navegação
-│   ├── screens/
-│   │   ├── CategoriesScreen.tsx    # Tela de categorias
-│   │   ├── MovementsScreen.tsx     # Lista de movimentos
-│   │   └── DetailScreen.tsx        # Detalhes do movimento
-│   └── types/
-│       └── index.ts           # Tipos TypeScript
-├── App.tsx                    # Componente principal
-└── package.json
-```
-
-## 🎨 Categorias Disponíveis
-
-- **Chutes** (Chagi) 🦵
-- **Bloqueios** (Makgi) 🛡️
-- **Posturas** (Seogi) 🧍
-- **Socos** (Jireugi) 👊
-- **Defesas** (Defesas) 🙌
-
-## 📱 Como Usar o App
-
-1. **Tela Inicial**: Escolha uma categoria de movimentos
-2. **Lista de Movimentos**: Veja todos os movimentos da categoria selecionada
-3. **Detalhes**: Toque em um movimento para ver informações completas
-
-## 🔧 Scripts Disponíveis
-
-- `npm start` - Inicia o servidor Expo
-- `npm run android` - Executa no Android
-- `npm run ios` - Executa no iOS (requer macOS)
-- `npm run web` - Executa no navegador
-
-## 📝 Próximas Melhorias
-
-- [ ] Adicionar vídeos demonstrativos
-- [ ] Sistema de favoritos
-- [ ] Busca por movimentos
-- [ ] Modo escuro
-- [ ] Acompanhamento de progresso
-- [ ] Quiz de conhecimento
-
-## 📄 Licença
-
-Este projeto é de código aberto e está disponível para uso educacional.
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
-1. Fazer fork do projeto
-2. Criar uma branch para sua feature (`git checkout -b feature/NovaFuncionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
-5. Abrir um Pull Request
-
----
+1. Entregar a matriz **zona etária × graduação × técnicas/poomsae** e revisar os nomes e instruções existentes.
+2. Enviar os vídeos próprios de chutes, socos, bloqueios, posturas, defesas, técnicas especiais e poomsae, indicando a técnica exata de cada arquivo.
+3. Confirmar nome da escola, convite, identidade visual, texto de privacidade e condições do serviço de R$200/mês.

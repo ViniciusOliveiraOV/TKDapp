@@ -5,7 +5,6 @@ export interface Movement {
   category: MovementCategory;
   description: string;
   difficulty: 'Iniciante' | 'Intermediário' | 'Avançado';
-  belt: string;
   tips?: string[];
   videos: string[]; // Array of YouTube video IDs
 }
